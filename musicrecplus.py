@@ -12,10 +12,6 @@ with open("musicrecplus.txt", "w+") as file:
         data[name] = []
         # enter preferences before showing menu
 
-def save():
-    " When the user selects 'q', it saves and quits. """
-    pass
-
 def print_menu():
     """ Gives the user a menu of options to input. """
     valid_options = ['e', 'r', 'p', 'h', 'm', 'q']
@@ -34,4 +30,29 @@ q - Save and quit
             return x
         else:
             print("Invalid option chosen. Please try again.")
+
+def save_database(database, filename="musicrecplus.txt"):
+    """ Saves the current database to the file. """
+    with open(filename, 'w') as file:
+        for user, artists in database.items():
+            file.write(f"{user}:{','.join(artists)}\n")
     
+def menu_options():
+    " Handles the user's choice from the menu. """
+    while True:
+        choice = print_menu()
+        if choice == 'q':
+            save_database(data)
+            break
+        elif choice == 'e':
+            pass # Enter Preferences
+        elif choice == 'r':
+            pass # Get recommendations
+        elif choice == 'p':
+            pass # Show most popular artists
+        elif choice == 'h':
+            pass # How popular is the most popular
+        elif choice == 'm':
+            pass # Which user has the most likes
+
+menu_options()
