@@ -36,6 +36,17 @@ def save_database(database, filename="musicrecplus.txt"):
     with open(filename, 'w') as file:
         for user, artists in database.items():
             file.write(f"{user}:{','.join(artists)}\n")
+
+def enter_preferences(database, user):
+    """ Allows the user to input the artists they like. """
+    artists = []
+    while True:
+        preference = input("Enter an artist you like (Enter to finish):").strip()
+        if preference == "":
+            break
+        elif preference not in artists:
+            artists.append(preference.title())
+        database[user] = sorted(artists)
     
 def menu_options():
     " Handles the user's choice from the menu. """
@@ -45,7 +56,7 @@ def menu_options():
             save_database(data)
             break
         elif choice == 'e':
-            pass # Enter Preferences
+            enter_preferences(data, name)
         elif choice == 'r':
             pass # Get recommendations
         elif choice == 'p':
