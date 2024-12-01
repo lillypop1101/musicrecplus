@@ -47,7 +47,19 @@ def enter_preferences(database, user):
         elif preference not in artists:
             artists.append(preference.title())
         database[user] = sorted(artists)
-    
+"""
+def most_pop_artist(filename):
+     Prints the artists that are liked by the most users.     
+    artistscount = [] 
+    with open(filename, 'r') as file:
+        for user, artist in file:
+            if artist not in artistscount:
+                artist.append(artist: 1)
+            if artist in artistscount:
+"""
+
+
+
 def menu_options():
     " Handles the user's choice from the menu. """
     while True:
