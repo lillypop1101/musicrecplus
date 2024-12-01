@@ -47,19 +47,29 @@ def enter_preferences(database, user):
         elif preference not in artists:
             artists.append(preference.title())
         database[user] = sorted(artists)
-"""
-def most_pop_artist(filename):
-     Prints the artists that are liked by the most users.     
-    artistscount = [] 
-    with open(filename, 'r') as file:
-        for user, artist in file:
+
+def most_pop_artist(database):
+    """Prints the artists that are liked by the most users."""  
+    artistscount = {} 
+    result = 0
+    for user, artists in database.items():
+        if "$" in user:
+            continue
+        for artist in artists:
             if artist not in artistscount:
-                artist.append(artist: 1)
-            if artist in artistscount:
-"""
-
-
-
+                artistscount[artist] = 1 
+            else:
+                artistscount[artist] += 1
+    if bool(artistscount) == True:
+        while result < 3:
+            if bool(artistscount) == False:
+                return ""
+            print(max(artistscount))
+            artistscount.pop(max(artistscount))
+            result += 1
+    else:
+        print("Sorry, no artists found.")
+    
 def menu_options():
     " Handles the user's choice from the menu. """
     while True:
@@ -72,7 +82,7 @@ def menu_options():
         elif choice == 'r':
             pass # Get recommendations
         elif choice == 'p':
-            pass # Show most popular artists
+            most_pop_artist(data)
         elif choice == 'h':
             pass # How popular is the most popular
         elif choice == 'm':
