@@ -6,14 +6,18 @@ We pledge our honor that we have abided by the Stevens Honor System.
 data = {}
 name = ""
 
-with open("musicrecplus.txt", "w+") as file:
+with open("musicrecplus.txt", "a") as file:
     name = input("Enter your name ( put a $ symbol after your name if you wish your preferences to remain private ): ")
     if name not in data:
         data[name] = []
         # enter preferences before showing menu
+    """else:
+        for line in file:
+            if name in line:"""
 
+                
 def print_menu():
-    """ Gives the user a menu of options to input. """
+    """ Felicity: Gives the user a menu of options to input. """
     valid_options = ['e', 'r', 'p', 'h', 'm', 'q']
     while True:
         option = input("""
@@ -32,13 +36,13 @@ q - Save and quit
             print("Invalid option chosen. Please try again.")
 
 def save_database(database, filename="musicrecplus.txt"):
-    """ Saves the current database to the file. """
+    """ Felicity: Saves the current database to the file. """
     with open(filename, 'w') as file:
         for user, artists in database.items():
             file.write(f"{user}:{','.join(artists)}\n")
 
 def enter_preferences(database, user):
-    """ Allows the user to input the artists they like. """
+    """ Felicity: Allows the user to input the artists they like. """
     artists = []
     while True:
         preference = input("Enter an artist you like (Enter to finish):").strip()
@@ -49,7 +53,7 @@ def enter_preferences(database, user):
         database[user] = sorted(artists)
 
 def most_pop_artist(database):
-    """Prints the artists that are liked by the most users."""  
+    """Naima Sana - Prints the artists that are liked by the most users. """  
     artistscount = {} 
     result = 0
     for user, artists in database.items():
@@ -71,7 +75,7 @@ def most_pop_artist(database):
         print("Sorry, no artists found.")
     
 def menu_options():
-    " Handles the user's choice from the menu. """
+    " Felicity: Handles the user's choice from the menu. """
     while True:
         choice = print_menu()
         if choice == 'q':
