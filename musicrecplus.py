@@ -23,7 +23,16 @@ name = input("Enter your name ( put a $ symbol after your name if you wish your 
 if name not in data:
     data[name] = []
 
-                
+def read_file():
+    data = {}
+    with open("musicrecplus.txt", "r") as file:
+        for line in file:
+            users, artists = line.strip().split(":")
+            artists_list = [s.strip() for s in artists.split(",")]
+            data[users.strip()] = artists_list
+    return data
+read_data = read_file()
+
 def print_menu():
     """ Felicity: Gives the user a menu of options to input. """
     valid_options = ['e', 'r', 'p', 'h', 'm', 'q']
@@ -61,6 +70,7 @@ def enter_preferences(database, user):
             artists.append(preference.title())
         database[user] = sorted(artists)
 
+
 def most_pop_artist(database):
     """Naima Sana - Prints the artists that are liked by the most users. """  
     artistscount = {} 
@@ -69,16 +79,21 @@ def most_pop_artist(database):
         if "$" in user:
             continue
         for artist in artists:
+            if artist == "":
+                continue
             if artist not in artistscount:
                 artistscount[artist] = 1 
             else:
                 artistscount[artist] += 1
+    print(artistscount)
+
     if bool(artistscount) == True:
         while result < 3:
             if bool(artistscount) == False:
                 return ""
-            print(max(artistscount))
-            artistscount.pop(max(artistscount))
+            top_artist = max(artistscount, key = lambda v: artistscount[v])
+            print(top_artist)
+            artistscount.pop(top_artist)
             result += 1
     else:
         print("Sorry, no artists found.")
@@ -122,7 +137,7 @@ def menu_options():
         elif choice == 'r':
             pass # Get recommendations
         elif choice == 'p':
-            most_pop_artist(data)
+            most_pop_artist(read_data)
         elif choice == 'h':
             pass # How popular is the most popular
         elif choice == 'm':
