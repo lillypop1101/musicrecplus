@@ -56,7 +56,6 @@ def save_database(database, filename="musicrecplus.txt"):
     """ Felicity: Saves the current database to the file. """
     #with open(filename, 'w') as file:
     for user, artists in database.items():
-        file.write(f"{user}:{','.join(artists)}\n")
         file.close()
 
 def enter_preferences(database, user):
@@ -72,6 +71,7 @@ def enter_preferences(database, user):
     for user, artists in database.items():
         file.write(f"{user}:{','.join(artists)}\n")
         file.close()
+    read_data = read_file()
 
 def most_pop_artist(database):
     """Naima Sana - Prints the artists that are liked by the most users. """  
