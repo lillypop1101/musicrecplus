@@ -150,7 +150,7 @@ def menu_options():
         elif choice == 'p':
             most_pop_artist(read_data)
         elif choice == 'h':
-            how_pop_artist(read_data) # How popular is the most popular
+            how_pop_artist(read_data)
         elif choice == 'm':
             most_likes(read_data)
 
