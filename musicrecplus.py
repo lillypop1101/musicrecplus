@@ -105,7 +105,7 @@ def most_likes(database):
     most = 0
     
     for user, artists in database.items():
-        if "$" in user:
+        if user.endswith("$"):
             continue
         
         numArtists = len(database[user])
