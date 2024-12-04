@@ -3,17 +3,25 @@ Nov. 25, 2024
 Jem Riche, Naima Sana, Felicity Tabia
 We pledge our honor that we have abided by the Stevens Honor System.
 """
+
+import os.path
+from pathlib import Path
+
+path = os.path.abspath(os.getcwd()) + "\\musicrecplus.txt"
 data = {}
 name = ""
 
-with open("musicrecplus.txt", "a") as file:
-    name = input("Enter your name ( put a $ symbol after your name if you wish your preferences to remain private ): ")
-    if name not in data:
-        data[name] = []
-        # enter preferences before showing menu
-    """else:
-        for line in file:
-            if name in line:"""
+
+"""Jem Riche: Opens file, appends if file exists and writes if it does not."""
+if os.path.exists(path):
+    append_write = 'a+'
+else:
+    append_write = 'w+' 
+
+file = open(path,append_write)
+name = input("Enter your name ( put a $ symbol after your name if you wish your preferences to remain private ): ")
+if name not in data:
+    data[name] = []
 
                 
 def print_menu():
@@ -37,9 +45,10 @@ q - Save and quit
 
 def save_database(database, filename="musicrecplus.txt"):
     """ Felicity: Saves the current database to the file. """
-    with open(filename, 'w') as file:
-        for user, artists in database.items():
-            file.write(f"{user}:{','.join(artists)}\n")
+    #with open(filename, 'w') as file:
+    for user, artists in database.items():
+        file.write(f"{user}:{','.join(artists)}\n")
+        file.close()
 
 def enter_preferences(database, user):
     """ Felicity: Allows the user to input the artists they like. """
@@ -73,6 +82,33 @@ def most_pop_artist(database):
             result += 1
     else:
         print("Sorry, no artists found.")
+
+
+def most_likes(database):
+    """Jem Riche - Prints the user(s) that like the most artists. """
+    users_lst = []
+    most = 0
+    
+    for user, artists in database.items():
+        if "$" in user:
+            continue
+        
+        numArtists = len(database[user])
+        if numArtists >= most:
+            if numArtists > most:
+                users_lst = []
+                
+            users_lst.append(user)
+            most = numArtists
+
+    if most == 0:
+        print("Sorry, no user found")
+        
+    else:
+        for userID in sorted(users_lst):
+            print(userID)
+
+
     
 def menu_options():
     " Felicity: Handles the user's choice from the menu. """
@@ -90,6 +126,6 @@ def menu_options():
         elif choice == 'h':
             pass # How popular is the most popular
         elif choice == 'm':
-            pass # Which user has the most likes
+            most_likes(data) # Which user has the most likes
 
 menu_options()
