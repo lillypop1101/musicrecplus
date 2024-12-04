@@ -76,7 +76,7 @@ def most_pop_artist(database):
     artistscount = {} 
     result = 0
     for user, artists in database.items():
-        if "$" in user:
+        if user.endswith("$"):
             continue
         for artist in artists:
             if artist == "":
@@ -105,7 +105,7 @@ def most_likes(database):
     most = 0
     
     for user, artists in database.items():
-        if "$" in user:
+        if user.endswith("$"):
             continue
         
         numArtists = len(database[user])
@@ -141,6 +141,6 @@ def menu_options():
         elif choice == 'h':
             pass # How popular is the most popular
         elif choice == 'm':
-            most_likes(data) # Which user has the most likes
+            most_likes(read_data) # Which user has the most likes
 
 menu_options()
