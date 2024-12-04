@@ -69,7 +69,9 @@ def enter_preferences(database, user):
         elif preference not in artists:
             artists.append(preference.title())
         database[user] = sorted(artists)
-
+    for user, artists in database.items():
+        file.write(f"{user}:{','.join(artists)}\n")
+        file.close()
 
 def most_pop_artist(database):
     """Naima Sana - Prints the artists that are liked by the most users. """  
