@@ -76,7 +76,7 @@ def most_pop_artist(database):
     artistscount = {} 
     result = 0
     for user, artists in database.items():
-        if "$" in user:
+        if user.endswith("$"):
             continue
         for artist in artists:
             if artist == "":
