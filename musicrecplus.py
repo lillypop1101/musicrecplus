@@ -73,10 +73,8 @@ def enter_preferences(database, user):
         file.close()
     read_data = read_file()
 
-def most_pop_artist(database):
-    """Naima Sana - Prints the artists that are liked by the most users. """  
+def artist_likes(database):
     artistscount = {} 
-    result = 0
     for user, artists in database.items():
         if user.endswith("$"):
             continue
@@ -87,8 +85,12 @@ def most_pop_artist(database):
                 artistscount[artist] = 1 
             else:
                 artistscount[artist] += 1
-    print(artistscount)
+    return artistscount
 
+def most_pop_artist(database):
+    """Naima Sana - Prints the artists that are liked by the most users. """  
+    artistscount = artist_likes(database)
+    result = 0
     if bool(artistscount) == True:
         while result < 3:
             if bool(artistscount) == False:
@@ -100,6 +102,13 @@ def most_pop_artist(database):
     else:
         print("Sorry, no artists found.")
 
+def how_pop_artist(database):
+    """Naima Sana - Print the number of likes the most popular artist received.""" 
+    artistscount = artist_likes(database)
+    if bool(artistscount) == True:
+        print(max(artistscount.values()))
+    else:
+        print("Sorry, no artists found.")
 
 def most_likes(database):
     """Jem Riche - Prints the user(s) that like the most artists. """
@@ -141,7 +150,7 @@ def menu_options():
         elif choice == 'p':
             most_pop_artist(read_data)
         elif choice == 'h':
-            pass # How popular is the most popular
+            how_pop_artist(read_data) # How popular is the most popular
         elif choice == 'm':
             most_likes(read_data) # Which user has the most likes
 
