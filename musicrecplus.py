@@ -141,6 +141,6 @@ def menu_options():
         elif choice == 'h':
             pass # How popular is the most popular
         elif choice == 'm':
-            most_likes(data) # Which user has the most likes
+            most_likes(read_data) # Which user has the most likes
 
 menu_options()
