@@ -184,10 +184,14 @@ if os.path.exists(path):
 else:
     append_write = 'w+' 
 
-file = open(path,append_write)
+file = open(path, append_write)
 name = input("Enter your name ( put a $ symbol after your name if you wish your preferences to remain private ): ")
-if name not in data:
+if name not in read_data:
     data[name] = []
     enter_preferences(data, name)
+else:
+    print(read_data[name]) # For testing
+    
+    
 
 menu_options()
