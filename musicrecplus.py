@@ -4,11 +4,12 @@ Jem Riche, Naima Sana, Felicity Tabia
 We pledge our honor that we have abided by the Stevens Honor System.
 """
 
+
 import os
 
 class MusicRecPlus:
+    """Felicity: Initializes the new instance for the MusicRecPlus"""
     def __init__(self, filename="musicrecplus.txt"):
-        """Felicity: Initializes a new instance of the MusicRecPlus."""
         self.filename = filename
         self.data = self.read_file()
         self.user = None
@@ -50,14 +51,14 @@ q - Save and quit
                 print("Invalid option chosen. Please try again.")
 
     def enter_preferences(self):
-        """Felicity: Allows the user to input the artists they like and replaces any existing preferences."""
-        artists = set() 
+        """Felicity: Allows the user to input the artists they like."""
+        artists = set(self.data.get(self.user, []))
         while True:
             preference = input("Enter an artist you like (Enter to finish): ").strip()
             if not preference:
                 break
-            artists.add(preference.title())  
-        self.data[self.user] = sorted(artists)  
+            artists.add(preference.title())
+        self.data[self.user] = sorted(artists)
 
     def artist_likes(self):
         """Naima: Returns a dictionary of artist counts based on user preferences."""
@@ -96,7 +97,7 @@ q - Save and quit
             print("Sorry, no artists found.")
 
     def most_likes(self):
-        """Naima: Prints the user(s) that like the most artists."""
+        """Jem Riche - Prints the user(s) that like the most artists."""
         users_lst = []
         most = 0
         for user, artists in self.data.items():
@@ -115,7 +116,7 @@ q - Save and quit
                 print(userID)
 
     def get_rec(self):
-        """Jem Riche: Prints recommended artists based on the most similar user preferences."""
+        """Jem Riche - Prints recommended artists based off of users with the most similar preferences."""
         def similarity(user1, user2):
             """Helper function to find similarity"""
             sim = sum(1 for artist in user1 if artist in user2)
@@ -165,15 +166,16 @@ q - Save and quit
         else:
             append_write = 'w+'
 
-file = open(path, append_write)
-name = input("Enter your name ( put a $ symbol after your name if you wish your preferences to remain private ): ")
-if name not in read_data:
-    data[name] = []
-    enter_preferences(data, name)
-else:
-    print(read_data[name]) # For testing
-    
-    
+        name = input("Enter your name (put a $ symbol after your name if you wish your preferences to remain private): ")
+        self.user = name.strip()
+        if self.user not in self.data:
+            self.data[self.user] = []
+            self.enter_preferences()
+        else:
+            print(self.data[self.user])  # Show the existing preferences for testing
+
+        self.menu_options()
+
 
 if __name__ == "__main__":
     app = MusicRecPlus()
