@@ -165,16 +165,15 @@ q - Save and quit
         else:
             append_write = 'w+'
 
-        name = input("Enter your name (put a $ symbol after your name if you wish your preferences to remain private): ")
-        self.user = name.strip()
-        if self.user not in self.data:
-            self.data[self.user] = []
-            self.enter_preferences()
-        else:
-            print(self.data[self.user])  # Show the existing preferences for testing
-
-        self.menu_options()
-
+file = open(path, append_write)
+name = input("Enter your name ( put a $ symbol after your name if you wish your preferences to remain private ): ")
+if name not in read_data:
+    data[name] = []
+    enter_preferences(data, name)
+else:
+    print(read_data[name]) # For testing
+    
+    
 
 if __name__ == "__main__":
     app = MusicRecPlus()
