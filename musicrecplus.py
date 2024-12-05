@@ -25,13 +25,13 @@ if name not in data:
 
 def read_file():
     data = {}
-    with open("musicrecplus.txt", "r") as file:
-        for line in file:
-            users, artists = line.strip().split(":")
-            artists_list = [s.strip() for s in artists.split(",")]
-            data[users.strip()] = artists_list
+    if os.path.exists(path):
+        with open(path, "r") as file:
+            for line in file:
+                users, artists = line.strip().split(":")
+                artists_list = [s.strip() for s in artists.split(",")]
+                data[users.strip()] = artists_list
     return data
-read_data = read_file()
 
 def print_menu():
     """ Felicity: Gives the user a menu of options to input. """
@@ -68,10 +68,8 @@ def enter_preferences(database, user):
         elif preference not in artists:
             artists.append(preference.title())
         database[user] = sorted(artists)
-    for user, artists in database.items():
+    with open(path, "a+") as file:
         file.write(f"{user}:{','.join(artists)}\n")
-        file.close()
-    read_data = read_file()
 
 def artist_likes(database):
     artistscount = {} 
@@ -184,7 +182,7 @@ def menu_options():
         elif choice == 'r':
             get_rec(read_data)
         elif choice == 'p':
-            most_pop_artist(read_data)
+            most_pop_artist(data)
         elif choice == 'h':
             how_pop_artist(read_data)
         elif choice == 'm':
