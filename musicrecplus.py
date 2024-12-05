@@ -18,11 +18,6 @@ if os.path.exists(path):
 else:
     append_write = 'w+' 
 
-file = open(path,append_write)
-name = input("Enter your name ( put a $ symbol after your name if you wish your preferences to remain private ): ")
-if name not in data:
-    data[name] = []
-
 def read_file():
     data = {}
     if os.path.exists(path):
@@ -32,6 +27,13 @@ def read_file():
                 artists_list = [s.strip() for s in artists.split(",")]
                 data[users.strip()] = artists_list
     return data
+
+read_data = read_file()
+file = open(path,append_write)
+name = input("Enter your name ( put a $ symbol after your name if you wish your preferences to remain private ): ")
+if name not in data:
+    data[name] = []
+
 
 def print_menu():
     """ Felicity: Gives the user a menu of options to input. """
@@ -179,12 +181,12 @@ def menu_options():
         elif choice == 'e':
             enter_preferences(data, name)
         elif choice == 'r':
-            get_rec(data)
+            get_rec(read_data)
         elif choice == 'p':
-            most_pop_artist(data)
+            most_pop_artist(read_data)
         elif choice == 'h':
-            how_pop_artist(data)
+            how_pop_artist(read_data)
         elif choice == 'm':
-            most_likes(data)
+            most_likes(read_data)
 
 menu_options()
