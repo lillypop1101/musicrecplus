@@ -52,12 +52,6 @@ q - Save and quit
         else:
             print("Invalid option chosen. Please try again.")
 
-def save_database(database, filename="musicrecplus.txt"):
-    """ Felicity: Saves the current database to the file. """
-    #with open(filename, 'w') as file:
-    for user, artists in database.items():
-        file.close()
-
 def enter_preferences(database, user):
     """ Felicity: Allows the user to input the artists they like. """
     artists = []
@@ -70,6 +64,12 @@ def enter_preferences(database, user):
         database[user] = sorted(artists)
     with open(path, "a+") as file:
         file.write(f"{user}:{','.join(artists)}\n")
+
+def save_database(database, filename="musicrecplus.txt"):
+    """ Felicity: Saves the current database to the file. """
+    #with open(filename, 'w') as file:
+    for user, artists in database.items():
+        file.close()
 
 def artist_likes(database):
     artistscount = {} 
