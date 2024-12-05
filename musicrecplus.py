@@ -64,6 +64,7 @@ def enter_preferences(database, user):
         database[user] = sorted(artists)
     with open(path, "a+") as file:
         file.write(f"{user}:{','.join(artists)}\n")
+    read_data = read_file()
 
 def save_database(database, filename="musicrecplus.txt"):
     """ Felicity: Saves the current database to the file. """
