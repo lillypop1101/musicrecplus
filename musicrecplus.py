@@ -167,8 +167,6 @@ def get_rec(database):
             print(artist)
     else:
         print("No recommendations available at this time.")
-
-
     
 def menu_options():
     " Felicity: Handles the user's choice from the menu. """
@@ -180,12 +178,12 @@ def menu_options():
         elif choice == 'e':
             enter_preferences(data, name)
         elif choice == 'r':
-            get_rec(read_data)
+            get_rec(data)
         elif choice == 'p':
             most_pop_artist(data)
         elif choice == 'h':
-            how_pop_artist(read_data)
+            how_pop_artist(data)
         elif choice == 'm':
-            most_likes(read_data)
+            most_likes(data)
 
 menu_options()
