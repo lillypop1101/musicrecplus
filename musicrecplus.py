@@ -11,7 +11,6 @@ path = os.path.abspath(os.getcwd()) + "\\musicrecplus.txt"
 data = {}
 name = ""
 
-
 """Jem Riche: Opens file, appends if file exists and writes if it does not."""
 if os.path.exists(path):
     append_write = 'a+'
@@ -28,12 +27,28 @@ def read_file():
                 data[users.strip()] = artists_list
     return data
 
+def enter_preferences(database, user):
+    """ Felicity: Allows the user to input the artists they like. """
+    artists = []
+    while True:
+        preference = input("Enter an artist you like (Enter to finish):").strip()
+        if preference == "":
+            break
+        elif preference not in artists:
+            artists.append(preference.title())
+        database[user] = sorted(artists)
+    with open(path, "a+") as file:
+        file.write(f"{user}:{','.join(artists)}\n")
+    
 read_data = read_file()
+
 file = open(path,append_write)
 name = input("Enter your name ( put a $ symbol after your name if you wish your preferences to remain private ): ")
-if name not in data:
+if name not in read_data:
     data[name] = []
-
+    enter_preferences(data, name)
+read_data = read_file()    
+    
 
 def print_menu():
     """ Felicity: Gives the user a menu of options to input. """
@@ -54,19 +69,6 @@ q - Save and quit
         else:
             print("Invalid option chosen. Please try again.")
 
-def enter_preferences(database, user):
-    """ Felicity: Allows the user to input the artists they like. """
-    artists = []
-    while True:
-        preference = input("Enter an artist you like (Enter to finish):").strip()
-        if preference == "":
-            break
-        elif preference not in artists:
-            artists.append(preference.title())
-        database[user] = sorted(artists)
-    with open(path, "a+") as file:
-        file.write(f"{user}:{','.join(artists)}\n")
-    read_data = read_file()
 
 def save_database(database, filename="musicrecplus.txt"):
     """ Felicity: Saves the current database to the file. """
@@ -91,6 +93,7 @@ def artist_likes(database):
 def most_pop_artist(database):
     """Naima Sana - Prints the artists that are liked by the most users. """  
     artistscount = artist_likes(database)
+    print(artistscount)
     result = 0
     if bool(artistscount) == True:
         while result < 3:
@@ -173,6 +176,7 @@ def get_rec(database):
     
 def menu_options():
     " Felicity: Handles the user's choice from the menu. """
+    read_data = read_file()
     while True:
         choice = print_menu()
         if choice == 'q':
@@ -180,6 +184,7 @@ def menu_options():
             break
         elif choice == 'e':
             enter_preferences(data, name)
+            read_data = read_file()
         elif choice == 'r':
             get_rec(read_data)
         elif choice == 'p':
