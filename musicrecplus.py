@@ -11,46 +11,16 @@ path = os.path.abspath(os.getcwd()) + "\\musicrecplus.txt"
 data = {}
 name = ""
 
-"""Jem Riche: Opens file, appends if file exists and writes if it does not."""
-if os.path.exists(path):
-    append_write = 'a+'
-else:
-    append_write = 'w+' 
-
 def read_file():
     data = {}
-    if os.path.exists(path):
-        with open(path, "r") as file:
-            for line in file:
-                users, artists = line.strip().split(":")
-                artists_list = [s.strip() for s in artists.split(",")]
-                data[users.strip()] = artists_list
+    with open("musicrecplus.txt", "r") as file:
+        for line in file:
+            users, artists = line.strip().split(":")
+            artists_list = [s.strip() for s in artists.split(",")]
+            data[users.strip()] = artists_list
     return data
-
-def enter_preferences(database, user):
-    """ Felicity: Allows the user to input the artists they like. """
-    artists = []
-    while True:
-        preference = input("Enter an artist you like (Enter to finish):").strip()
-        if preference == "":
-            break
-        elif preference not in artists:
-            artists.append(preference.title())
-        database[user] = sorted(artists)
-    with open(path, "a+") as file:
-        file.write(f"{user}:{','.join(artists)}\n")
-    
 read_data = read_file()
 
-file = open(path,append_write)
-name = input("Enter your name ( put a $ symbol after your name if you wish your preferences to remain private ): ")
-if name not in read_data:
-    data[name] = []
-    enter_preferences(data, name)
-    read_data = read_file() 
-elif name in read_data:
-    data[name] = read_data[name]  
-    
 def print_menu():
     """ Felicity: Gives the user a menu of options to input. """
     valid_options = ['e', 'r', 'p', 'h', 'm', 'q']
@@ -70,12 +40,26 @@ q - Save and quit
         else:
             print("Invalid option chosen. Please try again.")
 
-
 def save_database(database, filename="musicrecplus.txt"):
     """ Felicity: Saves the current database to the file. """
     #with open(filename, 'w') as file:
     for user, artists in database.items():
         file.close()
+
+def enter_preferences(database, user):
+    """ Felicity: Allows the user to input the artists they like. """
+    artists = []
+    while True:
+        preference = input("Enter an artist you like (Enter to finish):").strip()
+        if preference == "":
+            break
+        elif preference not in artists:
+            artists.append(preference.title())
+        database[user] = sorted(artists)
+    for user, artists in database.items():
+        file.write(f"{user}:{','.join(artists)}\n")
+        file.close()
+    read_data = read_file()
 
 def artist_likes(database):
     artistscount = {} 
@@ -94,7 +78,6 @@ def artist_likes(database):
 def most_pop_artist(database):
     """Naima Sana - Prints the artists that are liked by the most users. """  
     artistscount = artist_likes(database)
-    print(artistscount)
     result = 0
     if bool(artistscount) == True:
         while result < 3:
@@ -174,10 +157,11 @@ def get_rec(database):
             print(artist)
     else:
         print("No recommendations available at this time.")
+
+
     
 def menu_options():
     " Felicity: Handles the user's choice from the menu. """
-    read_data = read_file()
     while True:
         choice = print_menu()
         if choice == 'q':
@@ -185,7 +169,6 @@ def menu_options():
             break
         elif choice == 'e':
             enter_preferences(data, name)
-            read_data = read_file()
         elif choice == 'r':
             get_rec(read_data)
         elif choice == 'p':
@@ -194,5 +177,17 @@ def menu_options():
             how_pop_artist(read_data)
         elif choice == 'm':
             most_likes(read_data)
+
+"""Jem Riche: Opens file, appends if file exists and writes if it does not."""
+if os.path.exists(path):
+    append_write = 'a+'
+else:
+    append_write = 'w+' 
+
+file = open(path,append_write)
+name = input("Enter your name ( put a $ symbol after your name if you wish your preferences to remain private ): ")
+if name not in data:
+    data[name] = []
+    enter_preferences(data, name)
 
 menu_options()
