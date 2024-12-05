@@ -1,7 +1,7 @@
 Naima:Drake,Sza,Tyler
-Kally:Drake
+Kally:Drake,Your Mom
 KAte:Tyler
-Till:Sza,P
+Till:Jane,Kate
 Just:P
 Love:P
 J$:P
@@ -11,4 +11,5 @@ SD:P,Adds
 A$:Q
 hi:Kill
 qqwfwf:Kill
-awf:Die
+awf:Live
+Kate:Nicki Minaj

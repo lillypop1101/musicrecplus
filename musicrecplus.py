@@ -4,28 +4,37 @@ Jem Riche, Naima Sana, Felicity Tabia
 We pledge our honor that we have abided by the Stevens Honor System.
 """
 
-import os.path
-from pathlib import Path
+import os
 
-path = os.path.abspath(os.getcwd()) + "\\musicrecplus.txt"
-data = {}
-name = ""
+class MusicRecPlus:
+    def __init__(self, filename="musicrecplus.txt"):
+        """Felicity: Initializes a new instance of the MusicRecPlus."""
+        self.filename = filename
+        self.data = self.read_file()
+        self.user = None
 
-def read_file():
-    data = {}
-    with open("musicrecplus.txt", "r") as file:
-        for line in file:
-            users, artists = line.strip().split(":")
-            artists_list = [s.strip() for s in artists.split(",")]
-            data[users.strip()] = artists_list
-    return data
-read_data = read_file()
+    def read_file(self):
+        """Naima: Reads the file and loads the data."""
+        try:
+            with open(self.filename, "r") as file:
+                return {
+                    user.strip(): [artist.strip() for artist in artists.split(",")]
+                    for user, artists in (line.split(":") for line in file)
+                }
+        except FileNotFoundError:
+            return {}
 
-def print_menu():
-    """ Felicity: Gives the user a menu of options to input. """
-    valid_options = ['e', 'r', 'p', 'h', 'm', 'q']
-    while True:
-        option = input("""
+    def save_database(self):
+        """Felicity: Saves the current database to the file."""
+        with open(self.filename, "w") as file:
+            for user, artists in self.data.items():
+                file.write(f"{user}:{','.join(artists)}\n")
+
+    def print_menu(self):
+        """Felicity: Displays the menu and gets a valid user choice."""
+        valid_options = ['e', 'r', 'p', 'h', 'm', 'q']
+        while True:
+            option = input("""
 Enter a letter to choose an option:
 e - Enter preferences
 r - Get recommendations
@@ -34,164 +43,139 @@ h - How popular is the most popular
 m - Which user has the most likes
 q - Save and quit
 """)
-        x = option.strip()
-        if x in valid_options:
-            return x
-        else:
-            print("Invalid option chosen. Please try again.")
-
-def save_database(database, filename="musicrecplus.txt"):
-    """ Felicity: Saves the current database to the file. """
-    #with open(filename, 'w') as file:
-    for user, artists in database.items():
-        file.close()
-
-def enter_preferences(database, user):
-    """ Felicity: Allows the user to input the artists they like. """
-    artists = []
-    while True:
-        preference = input("Enter an artist you like (Enter to finish):").strip()
-        if preference == "":
-            break
-        elif preference not in artists:
-            artists.append(preference.title())
-        database[user] = sorted(artists)
-    for user, artists in database.items():
-        file.write(f"{user}:{','.join(artists)}\n")
-        file.close()
-    read_data = read_file()
-
-def artist_likes(database):
-    artistscount = {} 
-    for user, artists in database.items():
-        if user.endswith("$"):
-            continue
-        for artist in artists:
-            if artist == "":
-                continue
-            if artist not in artistscount:
-                artistscount[artist] = 1 
+            x = option.strip()
+            if x in valid_options:
+                return x
             else:
-                artistscount[artist] += 1
-    return artistscount
+                print("Invalid option chosen. Please try again.")
 
-def most_pop_artist(database):
-    """Naima Sana - Prints the artists that are liked by the most users. """  
-    artistscount = artist_likes(database)
-    result = 0
-    if bool(artistscount) == True:
-        while result < 3:
-            if bool(artistscount) == False:
-                return ""
-            top_artist = max(artistscount, key = lambda v: artistscount[v])
-            print(top_artist)
-            artistscount.pop(top_artist)
-            result += 1
-    else:
-        print("Sorry, no artists found.")
+    def enter_preferences(self):
+        """Felicity: Allows the user to input the artists they like and replaces any existing preferences."""
+        artists = set() 
+        while True:
+            preference = input("Enter an artist you like (Enter to finish): ").strip()
+            if not preference:
+                break
+            artists.add(preference.title())  
+        self.data[self.user] = sorted(artists)  
 
-def how_pop_artist(database):
-    """Naima Sana - Print the number of likes the most popular artist received.""" 
-    artistscount = artist_likes(database)
-    if bool(artistscount) == True:
-        print(max(artistscount.values()))
-    else:
-        print("Sorry, no artists found.")
+    def artist_likes(self):
+        """Naima: Returns a dictionary of artist counts based on user preferences."""
+        artists_count = {}
+        for user, artists in self.data.items():
+            if user.endswith("$"):
+                continue
+            for artist in artists:
+                if artist == "":
+                    continue
+                if artist not in artists_count:
+                    artists_count[artist] = 1
+                else:
+                    artists_count[artist] += 1
+        return artists_count
 
-def most_likes(database):
-    """Jem Riche - Prints the user(s) that like the most artists. """
-    users_lst = []
-    most = 0
-    
-    for user, artists in database.items():
-        if user.endswith("$"):
-            continue
-        
-        numArtists = len(database[user])
-        if numArtists >= most:
-            if numArtists > most:
-                users_lst = []
-                
-            users_lst.append(user)
-            most = numArtists
+    def most_pop_artist(self):
+        """Naima: Prints the artists liked by the most users."""
+        artists_count = self.artist_likes()
+        if artists_count:
+            result = 0
+            while result < 3:
+                top_artist = max(artists_count, key=lambda v: artists_count[v])
+                print(top_artist)
+                artists_count.pop(top_artist)
+                result += 1
+        else:
+            print("Sorry, no artists found.")
 
-    if most == 0:
-        print("Sorry, no user found")
-        
-    else:
-        for userID in sorted(users_lst):
-            print(userID)
+    def how_pop_artist(self):
+        """Naima: Prints the number of likes the most popular artist received."""
+        artists_count = self.artist_likes()
+        if artists_count:
+            print(max(artists_count.values()))
+        else:
+            print("Sorry, no artists found.")
 
-def get_rec(database):
-    """Jem Riche - Prints recommended artists based off of users with the most similar preferences. """
+    def most_likes(self):
+        """Naima: Prints the user(s) that like the most artists."""
+        users_lst = []
+        most = 0
+        for user, artists in self.data.items():
+            if user.endswith("$"):
+                continue
+            num_artists = len(artists)
+            if num_artists >= most:
+                if num_artists > most:
+                    users_lst = []
+                users_lst.append(user)
+                most = num_artists
+        if most == 0:
+            print("Sorry, no user found")
+        else:
+            for userID in sorted(users_lst):
+                print(userID)
 
-    similar = []
-    recArt = []
-    
-    def similarity(user1, user2):
-        """Helper function to find similarity"""
-        sim = 0
-        for artist in user1:
-            if artist in user2:
-                sim += 1
+    def get_rec(self):
+        """Jem Riche: Prints recommended artists based on the most similar user preferences."""
+        def similarity(user1, user2):
+            """Helper function to find similarity"""
+            sim = sum(1 for artist in user1 if artist in user2)
+            return sim >= 2 and sim != len(user1) and sim != len(user2)
 
-        if sim>=2:
-            if sim != len(user1) and sim != len(user2):   # makes sure they are not identical
-                return True
-        return False
+        similar = []
+        rec_art = []
 
-    """Getting the recommendations"""
-    for user in database:
-        if user.endswith("$"):
-            continue
-        if similarity(database[name], database[user]) == True:
-            similar += database[user]
-            
-    for i in similar:
-        if i not in database[name]:
-            recArt.append(i)
-    
+        for user in self.data:
+            if user.endswith("$"):
+                continue
+            if similarity(self.data[self.user], self.data[user]):
+                similar += self.data[user]
 
-    if len(recArt) > 0:
-        for artist in sorted(list(set(recArt))):
-            print(artist)
-    else:
-        print("No recommendations available at this time.")
+        for artist in similar:
+            if artist not in self.data[self.user]:
+                rec_art.append(artist)
+
+        if rec_art:
+            for artist in sorted(set(rec_art)):
+                print(artist)
+        else:
+            print("No recommendations available at this time.")
+
+    def menu_options(self):
+        """Felicity: Handles the user's choice from the menu."""
+        while True:
+            choice = self.print_menu()
+            if choice == 'q':
+                self.save_database()
+                break
+            elif choice == 'e':
+                self.enter_preferences()
+            elif choice == 'r':
+                self.get_rec()
+            elif choice == 'p':
+                self.most_pop_artist()
+            elif choice == 'h':
+                self.how_pop_artist()
+            elif choice == 'm':
+                self.most_likes()
+
+    def run(self):
+        """Jem Riche: Opens file, appends if file exists and writes if it does not."""
+        if os.path.exists(self.filename):
+            append_write = 'a+'
+        else:
+            append_write = 'w+'
+
+        name = input("Enter your name (put a $ symbol after your name if you wish your preferences to remain private): ")
+        self.user = name.strip()
+        if self.user not in self.data:
+            self.data[self.user] = []
+            self.enter_preferences()
+        else:
+            print(self.data[self.user])  # Show the existing preferences for testing
+
+        self.menu_options()
 
 
-    
-def menu_options():
-    " Felicity: Handles the user's choice from the menu. """
-    while True:
-        choice = print_menu()
-        if choice == 'q':
-            save_database(data)
-            break
-        elif choice == 'e':
-            enter_preferences(data, name)
-        elif choice == 'r':
-            get_rec(read_data)
-        elif choice == 'p':
-            most_pop_artist(read_data)
-        elif choice == 'h':
-            how_pop_artist(read_data)
-        elif choice == 'm':
-            most_likes(read_data)
-
-"""Jem Riche: Opens file, appends if file exists and writes if it does not."""
-if os.path.exists(path):
-    append_write = 'a+'
-else:
-    append_write = 'w+' 
-
-file = open(path, append_write)
-name = input("Enter your name ( put a $ symbol after your name if you wish your preferences to remain private ): ")
-if name not in read_data:
-    data[name] = []
-    enter_preferences(data, name)
-else:
-    print(read_data[name]) # For testing
-    
-    
-
-menu_options()
+if __name__ == "__main__":
+    app = MusicRecPlus()
+    app.run()
