@@ -11,3 +11,4 @@ SD:P,Adds
 A$:Q
 hi:Kill
 qqwfwf:Kill
+awf:Die

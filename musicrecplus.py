@@ -47,9 +47,10 @@ name = input("Enter your name ( put a $ symbol after your name if you wish your 
 if name not in read_data:
     data[name] = []
     enter_preferences(data, name)
-read_data = read_file()    
+    read_data = read_file() 
+elif name in read_data:
+    data[name] = read_data[name]  
     
-
 def print_menu():
     """ Felicity: Gives the user a menu of options to input. """
     valid_options = ['e', 'r', 'p', 'h', 'm', 'q']
