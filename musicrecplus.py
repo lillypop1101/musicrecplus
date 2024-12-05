@@ -134,6 +134,42 @@ def most_likes(database):
         for userID in sorted(users_lst):
             print(userID)
 
+def get_rec(database):
+    """Jem Riche - Prints recommended artists based off of users with the most similar preferences. """
+
+    similar = []
+    recArt = []
+    
+    def similarity(user1, user2):
+        """Helper function to find similarity"""
+        sim = 0
+        for artist in user1:
+            if artist in user2:
+                sim += 1
+
+        if sim>=2:
+            if sim != len(user1) and sim != len(user2):   # makes sure they are not identical
+                return True
+        return False
+
+    """Getting the recommendations"""
+    for user in database:
+        if user.endswith("$"):
+            continue
+        if similarity(database[name], database[user]) == True:
+            similar += database[user]
+            
+    for i in similar:
+        if i not in database[name]:
+            recArt.append(i)
+    
+
+    if len(recArt) > 0:
+        for artist in sorted(list(set(recArt))):
+            print(artist)
+    else:
+        print("No recommendations available at this time.")
+
 
     
 def menu_options():
@@ -146,7 +182,7 @@ def menu_options():
         elif choice == 'e':
             enter_preferences(data, name)
         elif choice == 'r':
-            pass # Get recommendations
+            get_rec(read_data)
         elif choice == 'p':
             most_pop_artist(read_data)
         elif choice == 'h':
