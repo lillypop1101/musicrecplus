@@ -189,8 +189,9 @@ name = input("Enter your name ( put a $ symbol after your name if you wish your 
 if name not in read_data:
     data[name] = []
     enter_preferences(data, name)
-else:
-    print(read_data[name]) # For testing
+#else:
+    #print(read_data[name]) 
+    
     
     
 
